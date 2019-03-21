@@ -21,6 +21,7 @@ Run YOLO detection.
 python yolo_video.py --model_path plate.h5 --classes_path class.txt --image
 ```
 then input filepath.
+
 ![Plate](pictures/plate1.png)
 
 ### 3) Test the model on video
