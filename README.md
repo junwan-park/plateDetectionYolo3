@@ -20,7 +20,7 @@ Run YOLO detection.
 ```
 python yolo_video.py --model_path plate.h5 --classes_path class.txt --image
 ```
-then input filepath.
+Then input filepath. Output is saved as pictures/test_result.png
 
 ![Plate](pictures/plate1.png)
 
