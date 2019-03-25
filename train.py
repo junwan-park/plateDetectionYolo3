@@ -15,7 +15,7 @@ from yolo3.utils import get_random_data
 
 import argparse
 
-def _main(annotation_path, classes_path, output_model_path):
+def _main(annotation_path, classes_path, output_model_path, saved_model_path):
     # return
     annotation_path = annotation_path
     log_dir = 'logs/000/'
@@ -34,7 +34,7 @@ def _main(annotation_path, classes_path, output_model_path):
             freeze_body=2, weights_path='model_data/tiny_yolo_weights.h5')
     else:
         model = create_model(input_shape, anchors, num_classes,
-            freeze_body=2, weights_path='model_data/yolo_weights.h5') # make sure you know what you freeze
+            freeze_body=2, weights_path=saved_model_path) # make sure you know what you freeze
     # model.save('yolo_model_retrain.h5')  # creates a HDF5 file 'my_model.h5'
 
     print(model.input)
@@ -47,7 +47,7 @@ def _main(annotation_path, classes_path, output_model_path):
     early_stopping = EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=1)
 
     val_split = 0.1
-    with open(annotation_path, encoding='utf-8') as f:
+    with open(annotation_path, encoding='utf-8-sig') as f:
         lines = f.readlines()
     np.random.seed(10101)
     np.random.shuffle(lines)
@@ -91,8 +91,8 @@ def _main(annotation_path, classes_path, output_model_path):
             steps_per_epoch=max(1, num_train//batch_size),
             validation_data=data_generator_wrapper(lines[num_train:], batch_size, input_shape, anchors, num_classes),
             validation_steps=max(1, num_val//batch_size),
-            epochs=100,
-            initial_epoch=50,
+            epochs=50,
+            initial_epoch=100,
             callbacks=[logging, checkpoint, reduce_lr, early_stopping])
         # model.save_weights(log_dir + 'trained_weights_final.h5')
         # model.save(log_dir + 'trained_model_final.h5')
@@ -224,11 +224,12 @@ if __name__ == '__main__':
     parser.add_argument("-a", "--annotation_path", type=str, default='test_data/training_data/annotation.txt', help="input annotation_path")
     parser.add_argument("-c", "--classes_path", type=str, default='test_data/training_data/pedestrian_classes.txt', help="input classes_path")
     parser.add_argument("-o", "--output_model_path", type=str, default='model_data/pedestrian_model.h5', help="input output_model_path")
+    parser.add_argument("-s", "--saved_model_path", type=str, default='model_data/yolo_weights.h5', help="load saved_model_path")
     args = parser.parse_args()
     print('annotation_path = ', args.annotation_path)
     print('classes_path = ', args.classes_path)
     print('output_model_path = ', args.output_model_path)
 
-    _main(args.annotation_path, args.classes_path, args.output_model_path)
+    _main(args.annotation_path, args.classes_path, args.output_model_path, args.saved_model_path)
 
 
