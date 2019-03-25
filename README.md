@@ -15,6 +15,14 @@ git clone https://github.com/12rics/plateDetectionYolo3.git
 
 Step 2: Download the model [plate.h5](https://drive.google.com/open?id=1a7SdZqNH2Ueh0Ohr-oRwftGPKIC3RNXm) to directory directly.
 
+Step 3: If you want to train with existed trained weights, you can run train by below code.
+```
+python train.py -a train.txt -c class.txt -o yourOutputname.h5 -s existedWeightyouwantoload.h5
+```
+train.txt is the text file which have paths of image file and the point of bounding boxes
+class.txt is the file which contains classes you want
+If you want to train with existed weights, you must use same class.txt when you use before for training
+
 ### 2) Test the model on image
 Run YOLO detection.
 ```
