@@ -146,10 +146,11 @@ class YOLO(object):
             label_size = draw.textsize(label, font)
 
             top, left, bottom, right = box
-            top = max(0, np.floor(top - self.extra_area).astype('int32'))
-            left = max(0, np.floor(left - self.extra_area).astype('int32'))
-            bottom = min(image.size[1], np.floor(bottom + self.extra_area).astype('int32'))
-            right = min(image.size[0], np.floor(right + self.extra_area).astype('int32'))
+
+            top = max(0, np.floor(top - 30).astype('int32'))
+            left = max(0, np.floor(left - 30).astype('int32'))
+            bottom = min(image.size[1], np.floor(bottom + 30).astype('int32'))
+            right = min(image.size[0], np.floor(right + 30).astype('int32'))
             print(label, (left, top), (right, bottom))
 
             if top - label_size[1] >= 0:
